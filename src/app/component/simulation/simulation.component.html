@@ -1,0 +1,32 @@
+<p-toolbar>
+    <div class="grid col-12">
+        <div class="col-6" style="text-align: left">
+        </div>
+        <div class="col-6" style="text-align: end">
+            <p-button icon="pi pi-download" label="Upload file csv" (click)="fileUploadSimple.click()"></p-button>
+        </div>
+    </div>
+</p-toolbar>
+<br /><br />
+<input
+    #fileUploadSimple
+    [accept]="'.csv'"
+    type="file"
+    class="file-input"
+    (change)="importDataFromCSV($event)"
+    hidden="true"
+/>
+<div class="grid">
+    <div class="col-6">
+        <p-chart #chart type="line" [data]="chartAmountIrr" [options]="ordersOptions"></p-chart>
+    </div>
+    <div class="col-6">
+        <p-chart #chart1 type="line" [data]="chartPredictYield" [options]="ordersOptions"></p-chart>
+    </div>
+    <div class="col-6">
+        <p-chart #chartLeaf type="line" [data]="chartLeafArea" [options]="ordersOptions"></p-chart>
+    </div>
+    <div class="col-6">
+        <p-chart #chartLabie type="line" [data]="chartLabieCacbon" [options]="ordersOptions"></p-chart>
+    </div>
+</div>

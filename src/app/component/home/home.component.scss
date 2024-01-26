@@ -1,0 +1,77 @@
+:host ::ng-deep{
+    p-table .p-datatable .p-datatable-thead > tr > th {
+        border-width: 1px 1px !important;
+        border-color: #947b7b !important;
+        border-style: solid !important;
+        background: #d8e3f4;
+    }
+    .spinner-container {
+        position: fixed;
+        top: 50% !important;
+        left: 60% !important;
+        transform: translate(-50%, -50%);
+        z-index: 9999; /* Adjust the z-index as needed */
+    }
+    @media screen and (min-width: 600px) {
+        .col-6 {
+            width: 50%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+        .col-3 {
+            width: 100/3%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+        .col-9 {
+            width: 75%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .col-6 {
+            width: 100%; /* Hiển thị 1 cột trên mỗi hàng */
+        }
+        .col-3 {
+            width: 100%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+        .col-9 {
+            width: 100%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+
+    }
+
+    p-table .p-datatable.p-datatable-gridlines .p-datatable-header {
+        border-width: 1px 1px 0px 1px;
+        border-color: #7a5c5c !important;
+        border-style: solid;
+
+    }
+
+    p-table .p-datatable.p-datatable-gridlines .p-paginator-bottom {
+        border-width: 0px 1px 1px 1px;
+        border-color: #989898;
+        border-style: solid;
+    }
+
+    p-table .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td:first-child {
+        border-left-color: #989898 !important;
+    }
+
+    .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr:last-child > td {
+        border-bottom-color: #989898 !important;
+    }
+
+    p-table .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td:last-child {
+        border-right-color: #989898 !important;
+    }
+
+    p-table .p-datatable {
+        width: 100%;
+    }
+    .tool {
+        margin: 2px;
+    }
+    .spacing-inline {
+        display: flex;
+        align-items: end;
+        flex-direction: row;
+    }
+
+}

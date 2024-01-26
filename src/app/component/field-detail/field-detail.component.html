@@ -1,0 +1,154 @@
+<div class="spinner-container">
+    <p-progressSpinner *ngIf="isLoading" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner"
+                       strokeWidth="4" fill="#EEEEEE" animationDuration="1.s"></p-progressSpinner>
+</div>
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+<div>
+    <div class="card">
+        <a class="flex flex-row align-items-center" (click)="onClickBack()">
+            <i class="pi pi-arrow-left"></i> &nbsp;&nbsp;
+            <h6>Thông tin {{this.nameField.fieldName}}</h6>
+        </a>
+        <p-tabView orientation="left">
+            <p-tabPanel header="Theo dõi tưới tiêu" leftIcon="pi pi-sun">
+                <div *ngIf="nameField.irrigationCheck == 'true'">
+                    <h4 style="color: #1B5E20">
+                        Cánh đồng đang tưới
+                    </h4>
+                    <div class="grid spacing-inline">
+                        <div class="col-3">
+                    <span>Thời gian bắt đầu tưới:
+                       </span>
+                        </div>
+                        <div class="col-3">
+                    <span>
+                    {{this.nameField.startIrrigation}}
+                     </span>
+                        </div>
+                    </div>
+                    <div class="grid spacing-inline">
+                        <div class="col-3">
+                    <span>Lượng nước tưới (l/m^2):
+                       </span>
+                        </div>
+                        <div class="col-3">
+                            {{this.nameField.irrigation_information.amount}}
+                        </div>
+                    </div>
+                    <div class="grid spacing-inline">
+                        <div class="col-3">
+                    <span>Thời gian kết thúc tưới:
+                       </span>
+                        </div>
+                        <div class="col-3">
+                            {{this.nameField.endIrrigation}}
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!this.nameField.customized_parameters.autoIrrigation && nameField.irrigationCheck != 'true' ">
+                    <div class="grid spacing-inline">
+                        <div class="col-3">
+                    <span>Chọn thời gian bắt đầu tưới:
+                       </span>
+                        </div>
+                        <div class="col-3">
+                    <span>
+                    <p-calendar [showIcon]="true" appendTo="body" [(ngModel)]="timeIrr" [showTime]=true
+                                dateFormat="dd/mm/yy"
+                                styleClass="w-full"></p-calendar>
+                     </span>
+                        </div>
+                    </div>
+                    <div class="grid spacing-inline">
+                        <div class="col-3">
+                    <span>Lượng nước tưới (l/m^2):
+                       </span>
+                        </div>
+                        <div class="col-3">
+                            <input type="number" pInputText style="height: 24px" class="w-full" [(ngModel)]="amount">
+                        </div>
+                    </div>
+                    <div style="text-align: end">
+                        <button pButton (click)="onClickSetIrr()" label="Cài đặt tưới" icon="pi pi-cog pi-fw"></button>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <div class="col-9">
+                        <p-chart #chart30 type="line" [data]="chartHumidity30" [options]="ordersOptions"></p-chart>
+                    </div>
+                    <div *ngIf="humidityList" class="col-3">
+                        <br>
+                        <div class="card overview-box flex flex-column pt-2 solid-surface-text-color"
+                             style="background: #63a854">
+                            <h5>Độ ẩm ở độ sâu 30 cm</h5>
+                            <div style="text-align: right">
+                                <h4>  {{this.humidityList[this.humidityList.length - 1].humidity30}} Cbar</h4>
+                            </div>
+                        </div>
+                        <br>
+                        <div class=" card overview-box flex flex-column pt-2 solid-surface-text-color"
+                             style="background: rgba(64,71,122,0.8)">
+                            <h5>Độ ẩm ở độ sâu 60 cm</h5>
+                            <div style="text-align: right">
+                                <h4>  {{this.humidityList[this.humidityList.length - 1].humidity60}} Cbar</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Dự đoán sản lượng" leftIcon="pi pi-info-circle">
+                <div class="grid">
+                    <div class="col-6">
+                        <p-chart #chart type="line" [data]="chartAmountIrr" [options]="ordersOptions"></p-chart>
+                    </div>
+                    <div class="col-6">
+                        <p-chart #chart1 type="line" [data]="chartPredictYield" [options]="ordersOptions"></p-chart>
+                    </div>
+                    <div class="col-6">
+                        <p-chart #chartLeaf type="line" [data]="chartLeafArea" [options]="ordersOptions"></p-chart>
+                    </div>
+                    <div class="col-6">
+                        <p-chart #chartLabie type="line" [data]="chartLabieCacbon" [options]="ordersOptions"></p-chart>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Lịch sử tưới" leftIcon="pi pi-bookmark">
+                <p-table #dt dataKey="fieldName"
+                         [value]="listHistory"
+                         styleClass="p-datatable-gridlines" [rowHover]="true" [rows]="10" [paginator]="true"
+                         [globalFilterFields]="[]">
+                    <ng-template pTemplate="header" class="p-datatable-gridlines">
+                        <tr>
+                            <th>Thời gian bắt đầu</th>
+                            <th>Lượng nước tưới</th>
+                            <th>Thời gian tưới</th>
+                            <th>Người thực hiện</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <td>{{rowData.time}}</td>
+                            <td>{{rowData.amount | number: '1.2-2'}}</td>
+                            <td>{{rowData.duration/60 | number: '1.2-2'}}</td>
+                            <td>{{rowData.userName}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-tabPanel>
+            <p-tabPanel header="Tình trạng bệnh" leftIcon="pi pi-bookmark">
+                <div class="grid col-12" *ngIf="lstDisease" style="display: flex;">
+                    <div class="col-4 " *ngFor="let item of lstDisease">
+                        <div>{{item.time}}</div>
+                        <div><b>{{item.disease}}</b></div>
+                        <br>
+                        <div>
+                            <p-image [src]="item.urlImage" width="270"></p-image>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+:host ::ng-deep {
+    p-table .p-datatable .p-datatable-thead > tr > th {
+        border-width: 1px 1px !important;
+        border-color: #947b7b !important;
+        border-style: solid !important;
+        background: #d8e3f4;
+    }
+
+    .spinner-container {
+        position: fixed;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        z-index: 9999; /* Adjust the z-index as needed */
+    }
+}

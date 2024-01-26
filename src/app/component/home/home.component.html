@@ -1,0 +1,134 @@
+<p-toast></p-toast>
+<div class="spinner-container">
+    <p-progressSpinner *ngIf = "isLoading"[style]="{width: '50px', height: '50px'}" styleClass="custom-spinner" strokeWidth="4" fill="#EEEEEE" animationDuration="1.s"></p-progressSpinner>
+</div>
+<p-confirmDialog></p-confirmDialog>
+<div *ngIf = "!isLoading">
+    <p-toolbar>
+        <div class="grid col-12">
+            <div class="col-6" style="text-align: left">
+                <p-button icon="pi pi-plus" label= "Thêm mới cánh đồng" (onClick)="onClickThemMoi()"></p-button>
+            </div>
+            <div class="col-6" style="text-align: end">
+                <p-button icon="pi pi-download" label="Download Weather" (onClick)="ExportFileExcell()"></p-button>
+            </div>
+        </div>
+    </p-toolbar>
+    <br>
+    <div class="card">
+        <p-table  #dt [value]="lstField" dataKey="fieldName"
+                  styleClass="p-datatable-gridlines" [rowHover]="true" [rows]="10" [paginator]="true"
+                  [globalFilterFields]="['name','country.name','representative.name','status']">
+            <ng-template pTemplate="header" class="p-datatable-gridlines">
+                <tr>
+                    <th>Tên cánh đồng</th>
+                    <th>Thời gian bắt đầu</th>
+                    <th>Diện tích m^2</th>
+                    <th>Chế độ tưới</th>
+                    <th>Thông tin chi tiết</th>
+                    <th>Thao tác</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+                <tr>
+                    <td>{{rowData.fieldName}}</td>
+                    <td>{{rowData.startTime|date: 'dd/MM/yyyy'}}</td>
+                    <td>{{rowData.customized_parameters.acreage}}</td>
+                    <td>
+                        <div *ngIf="rowData.customized_parameters.autoIrrigation">Tự động</div>
+                        <div *ngIf="!rowData.customized_parameters.autoIrrigation">Tưới tay</div>
+                    </td>
+                    <td style="text-align: center">
+                        <button pButton class="p-button-rounded" style="margin-right: 3px" icon="pi pi-eye" (click)="onClickField(rowData)"></button>
+                    </td>
+                    <td style="text-align: center">
+                        <button pButton class="p-button-rounded" style="margin-right: 3px" icon="pi pi-pencil" (click)="onClickEdit(rowData)"></button>
+                        <button pButton class="p-button-rounded p-button-danger" icon="pi pi-trash" (click)="onClickDelete(rowData)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-dialog header="Thêm mới cánh đồng" [visible]="isInsert" [style]="{width: '800px'}"
+              [modal] = "true" [draggable]="false" [resizable]="false">
+        <div class="grid spacing-inline">
+            <div class="col-3">
+                Tên cánh đồng
+            </div>
+            <div class="col-3">
+                <input type="text" pInputText style="height: 27px" [(ngModel)]="nameField" >
+            </div>
+        </div>
+        <div style="text-align: end">
+            <button pButton (click)="onClickGhiThemMoi()" label="Ghi" icon = "pi pi-save" class="tool"></button>
+            <button pButton (click)="onClickHuy()" label="Hủy" icon = "pi pi-times" class="tool"></button>
+        </div>
+    </p-dialog>
+    <p-dialog header="Chỉnh sửa cánh đồng" [visible]="isUpdate" [style]="{width: '800px'}" *ngIf="selectField"
+              [modal] = "true" [draggable]="false" [resizable]="false">
+        <div class="grid spacing-inline">
+            <div class="col-3">
+                Field Capacity: &nbsp; {{selectField.customized_parameters.fieldCapacity}}
+            </div>
+            <div class="col-3">
+                <p-slider [(ngModel)]="selectField.customized_parameters.fieldCapacity"></p-slider>
+            </div>
+            <div class="col-3">
+                Khoảng cách giữa các lỗ (cm):
+            </div>
+            <div class="col-3">
+                <input type="number" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.distanceBetweenHole" >
+            </div>
+        </div>
+        <div class="grid spacing-inline">
+            <div class="col-3">
+                Khoảng cách giữa các hàng (cm):
+            </div>
+            <div class="col-3">
+                <input type="number" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.distanceBetweenRow">
+            </div>
+            <div class="col-3">
+                Mức phân bón:
+            </div>
+            <div class="col-3">
+                <input type="number" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.fertilizationLevel">
+            </div>
+        </div>
+        <div class="grid spacing-inline">
+            <div class="col-3">
+                Diện tích (m2):
+            </div>
+            <div class="col-3">
+                <input type="number" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.acreage" >
+            </div>
+            <div class="col-3">
+                Tổng lỗ tưới:
+            </div>
+            <div class="col-3">
+                <input type="number" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.numberOfHoles">
+            </div>
+        </div>
+        <div class="grid spacing-inline">
+            <div class="col-3">
+                Tốc độ nhỏ giọt của mỗi lỗ tưới (l/h/hole)
+            </div>
+            <div class="col-3">
+                <input type="number" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.dripRate" >
+            </div>
+            <div class="col-3">
+                Chế độ tưới:
+            </div>
+            <div class="col-3">
+                <p-inputSwitch [(ngModel)]="selectField.customized_parameters.autoIrrigation"></p-inputSwitch>
+<!--                <input type="text" pInputText style="height: 27px" [(ngModel)]="selectField.customized_parameters.autoIrrigation">-->
+            </div>
+        </div>
+        <br>
+        <div style="text-align: end">
+            <button pButton (click)="onClickUpDate()" label="Ghi" icon = "pi pi-save" class="tool"></button>
+            <button pButton (click)="onClickHuy()" label="Hủy" icon = "pi pi-times" class="tool"></button>
+        </div>
+    </p-dialog>
+</div>
+
+

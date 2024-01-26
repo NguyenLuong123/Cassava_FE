@@ -1,0 +1,33 @@
+:host ::ng-deep {
+    .spinner-container {
+        position: fixed;
+        top: 50% !important;
+        left: 60% !important;
+        transform: translate(-50%, -50%);
+        z-index: 9999; /* Adjust the z-index as needed */
+    }
+    @media screen and (min-width: 600px) {
+        .col-6 {
+            width: 50%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+        .col-3 {
+            width: 100/3%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+        .col-9 {
+            width: 75%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .col-6 {
+            width: 100%; /* Hiển thị 1 cột trên mỗi hàng */
+        }
+        .col-3 {
+            width: 100%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+        .col-9 {
+            width: 100%; /* Hiển thị 2 cột trên mỗi hàng */
+        }
+
+    }
+}

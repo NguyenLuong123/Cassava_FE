@@ -1,0 +1,37 @@
+<p-toast [baseZIndex]="9999"></p-toast>
+<div class="spinner-container">
+    <p-progressSpinner *ngIf="isLoading" [style]="{width: '50px', height: '50px'}" styleClass="custom-spinner"
+                       strokeWidth="4" fill="#EEEEEE" animationDuration="1.s"></p-progressSpinner>
+</div>
+<div class="pages-body login-page flex flex-column">
+    <div class="align-self-center mt-auto mb-auto">
+        <div class="pages-panel card flex flex-column">
+                <h4>Đăng nhập</h4>
+            <br>
+            <br>
+            <div class="input-panel flex flex-column px-3">
+                <div class="p-inputgroup">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-user"></i>
+                    </span>
+                    <span class="p-float-label">
+                        <input type="text" id="user" pInputText [(ngModel)]="user">
+                        <label for="user">Tên đăng nhập</label>
+                    </span>
+                </div>
+
+                <div class="p-inputgroup mt-3 mb-6">
+                    <span class="p-inputgroup-addon">
+                        <i class="pi pi-lock"></i>
+                    </span>
+                    <span class="p-float-label">
+                        <input type="password" id="password" pInputText [(ngModel)]="password">
+                        <label for="password">Mật khẩu</label>
+                    </span>
+                </div>
+            </div>
+            <p-button label="LOGIN" (onClick)="loginUser()"></p-button>
+
+        </div>
+    </div>
+</div>
